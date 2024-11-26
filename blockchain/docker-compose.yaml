@@ -1,0 +1,261 @@
+version: '2.1'
+
+volumes:
+  orderer.demo.com:
+  peer0.fleetmanager.demo.com:
+  peer0.repairshop.demo.com:
+  peer0.insuranceprovider.demo.com:
+  peer0.vehicles.demo.com:
+
+networks:
+  fleetwatch_network:
+
+services:
+  ############# Orderer instances #############
+  orderer.demo.com:
+    extends:
+      file: docker-compose-base.yaml
+      service: orderer-base
+    container_name: orderer.demo.com
+    networks:
+      - fleetwatch_network
+    volumes:
+      - ./system-genesis-block/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+      - ./organizations/ordererOrganizations/orderer.demo.com/orderers/orderer.orderer.demo.com/msp:/var/hyperledger/orderer/msp
+      - ./organizations/ordererOrganizations/orderer.demo.com/orderers/orderer.orderer.demo.com/tls:/var/hyperledger/orderer/tls
+      - orderer.demo.com:/var/hyperledger/production/orderer
+    ports:
+      - 7050:7050
+      - 17050:17050
+
+  ############# Peer per org instances #############
+  peer0.fleetmanager.demo.com:
+    extends:
+      file: docker-compose-base.yaml
+      service: peer-base
+    container_name: peer0.fleetmanager.demo.com
+    networks:
+      - fleetwatch_network
+    environment:
+      - CORE_PEER_ID=peer0.fleetmanager.demo.com
+      - CORE_PEER_ADDRESS=peer0.fleetmanager.demo.com:7051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:7051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.fleetmanager.demo.com:7052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.fleetmanager.demo.com:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.fleetmanager.demo.com:7051
+      - CORE_PEER_LOCALMSPID=FleetManagerMSP
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb.fleetmanager:5984
+    volumes:
+      - ./organizations/peerOrganizations/fleetmanager.demo.com/peers/peer0.fleetmanager.demo.com/msp:/etc/hyperledger/fabric/msp
+      - ./organizations/peerOrganizations/fleetmanager.demo.com/peers/peer0.fleetmanager.demo.com/tls:/etc/hyperledger/fabric/tls
+      - peer0.fleetmanager.demo.com:/var/hyperledger/production
+    ports:
+      - 7051:7051
+    depends_on:
+      - couchdb.fleetmanager
+
+  peer0.repairshop.demo.com:
+    extends:
+      file: docker-compose-base.yaml
+      service: peer-base
+    container_name: peer0.repairshop.demo.com
+    networks:
+      - fleetwatch_network
+    environment:
+      - CORE_PEER_ID=peer0.repairshop.demo.com
+      - CORE_PEER_ADDRESS=peer0.repairshop.demo.com:8051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:8051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.repairshop.demo.com:8052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:8052
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.repairshop.demo.com:8051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.repairshop.demo.com:8051
+      - CORE_PEER_LOCALMSPID=RepairShopMSP
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb.repairshop:5984
+    volumes:
+      - ./organizations/peerOrganizations/repairshop.demo.com/peers/peer0.repairshop.demo.com/msp:/etc/hyperledger/fabric/msp
+      - ./organizations/peerOrganizations/repairshop.demo.com/peers/peer0.repairshop.demo.com/tls:/etc/hyperledger/fabric/tls
+      - peer0.repairshop.demo.com:/var/hyperledger/production
+    ports:
+      - 8051:8051
+    depends_on:
+      - couchdb.repairshop
+
+  peer0.insuranceprovider.demo.com:
+    extends:
+      file: docker-compose-base.yaml
+      service: peer-base
+    container_name: peer0.insuranceprovider.demo.com
+    networks:
+      - fleetwatch_network
+    environment:
+      - CORE_PEER_ID=peer0.insuranceprovider.demo.com
+      - CORE_PEER_ADDRESS=peer0.insuranceprovider.demo.com:9051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:9051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.insuranceprovider.demo.com:9052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:9052
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.insuranceprovider.demo.com:9051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.insuranceprovider.demo.com:9051
+      - CORE_PEER_LOCALMSPID=InsuranceProviderMSP
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb.insuranceprovider:5984
+    volumes:
+      - ./organizations/peerOrganizations/insuranceprovider.demo.com/peers/peer0.insuranceprovider.demo.com/msp:/etc/hyperledger/fabric/msp
+      - ./organizations/peerOrganizations/insuranceprovider.demo.com/peers/peer0.insuranceprovider.demo.com/tls:/etc/hyperledger/fabric/tls
+      - peer0.insuranceprovider.demo.com:/var/hyperledger/production
+    ports:
+      - 9051:9051
+    depends_on:
+      - couchdb.insuranceprovider
+
+  peer0.vehicles.demo.com:
+    extends:
+      file: docker-compose-base.yaml
+      service: peer-base
+    container_name: peer0.vehicles.demo.com
+    networks:
+      - fleetwatch_network
+    environment:
+      - CORE_PEER_ID=peer0.vehicles.demo.com
+      - CORE_PEER_ADDRESS=peer0.vehicles.demo.com:10051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:10051
+      - CORE_PEER_CHAINCODEADDRESS=peer0.vehicles.demo.com:10052
+      - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:10052
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.vehicles.demo.com:10051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.vehicles.demo.com:10051
+      - CORE_PEER_LOCALMSPID=VehiclesMSP
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb.vehicles:5984
+    volumes:
+      - ./organizations/peerOrganizations/vehicles.demo.com/peers/peer0.vehicles.demo.com/msp:/etc/hyperledger/fabric/msp
+      - ./organizations/peerOrganizations/vehicles.demo.com/peers/peer0.vehicles.demo.com/tls:/etc/hyperledger/fabric/tls
+      - peer0.vehicles.demo.com:/var/hyperledger/production
+    ports:
+      - 10051:10051
+    depends_on:
+      - couchdb.vehicles
+
+  ############# DB instances #############
+  couchdb.fleetmanager:
+    container_name: couchdb.fleetmanager
+    extends:
+      file: docker-compose-base.yaml
+      service: couchdb-base
+    ports:
+      - "5984:5984"
+
+  couchdb.repairshop:
+    container_name: couchdb.repairshop
+    extends:
+      file: docker-compose-base.yaml
+      service: couchdb-base
+    ports:
+      - "6984:5984"
+
+  couchdb.insuranceprovider:
+    container_name: couchdb.insuranceprovider
+    extends:
+      file: docker-compose-base.yaml
+      service: couchdb-base
+    ports:
+      - "7984:5984"
+
+  couchdb.vehicles:
+    container_name: couchdb.vehicles
+    extends:
+      file: docker-compose-base.yaml
+      service: couchdb-base
+    ports:
+      - "8984:5984"
+
+  ############# CA instances #############
+  ca.fleetmanager:
+    extends:
+      file: docker-compose-base.yaml
+      service: ca-base
+    container_name: ca.fleetmanager.demo.com
+    environment:
+      - FABRIC_CA_SERVER_CA_NAME=ca.fleetmanager.demo.com
+      - FABRIC_CA_SERVER_PORT=7054
+    ports:
+      - "7054:7054"
+    command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+    volumes:
+      - ./organizations/fabric-ca/fleetmanager:/etc/hyperledger/fabric-ca-server
+    networks:
+      - fleetwatch_network
+
+  ca.repairshop:
+    extends:
+      file: docker-compose-base.yaml
+      service: ca-base
+    container_name: ca.repairshop.demo.com
+    environment:
+      - FABRIC_CA_SERVER_CA_NAME=ca.repairshop.demo.com
+      - FABRIC_CA_SERVER_PORT=8054
+    ports:
+      - "8054:8054"
+    command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+    volumes:
+      - ./organizations/fabric-ca/repairshop:/etc/hyperledger/fabric-ca-server
+    networks:
+      - fleetwatch_network
+
+  ca.insuranceprovider:
+    extends:
+      file: docker-compose-base.yaml
+      service: ca-base
+    container_name: ca.insuranceprovider.demo.com
+    environment:
+      - FABRIC_CA_SERVER_CA_NAME=ca.insuranceprovider.demo.com
+      - FABRIC_CA_SERVER_PORT=9054
+    ports:
+      - "9054:9054"
+    command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+    volumes:
+      - ./organizations/fabric-ca/insuranceprovider:/etc/hyperledger/fabric-ca-server
+    networks:
+      - fleetwatch_network
+
+  ca.vehicles:
+    extends:
+      file: docker-compose-base.yaml
+      service: ca-base
+    container_name: ca.vehicles.demo.com
+    environment:
+      - FABRIC_CA_SERVER_CA_NAME=ca.vehicles.demo.com
+      - FABRIC_CA_SERVER_PORT=10054
+    ports:
+      - "10054:10054"
+    command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+    volumes:
+      - ./organizations/fabric-ca/vehicles:/etc/hyperledger/fabric-ca-server
+    networks:
+      - fleetwatch_network
+
+  ############# CLI #############
+  cli:
+    container_name: cli
+    image: hyperledger/fabric-tools:2.5
+    tty: true
+    stdin_open: true
+    environment:
+      - GOPATH=/opt/gopath
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - FABRIC_LOGGING_SPEC=INFO
+      - CORE_PEER_TLS_ENABLED=true
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+    command: /bin/bash
+    volumes:
+      - /var/run/:/host/var/run/
+      - ./organizations:/opt/gopath/src/github.com/hyperledger/fabric/peer/organizations
+      - ./scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts
+    networks:
+      - fleetwatch_network
+    depends_on:
+      - peer0.fleetmanager.demo.com
+      - peer0.repairshop.demo.com
+      - peer0.insuranceprovider.demo.com
+      - peer0.vehicles.demo.com

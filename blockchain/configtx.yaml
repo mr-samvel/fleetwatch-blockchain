@@ -1,0 +1,200 @@
+Organizations:
+  - &FleetManager
+    Name: FleetManagerMSP
+    ID: FleetManagerMSP
+    MSPDir: ./organizations/peerOrganizations/fleetmanager.demo.com/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('FleetManagerMSP.admin', 'FleetManagerMSP.peer', 'FleetManagerMSP.client')"
+      Writers:
+        Type: Signature
+        Rule: "OR('FleetManagerMSP.admin', 'FleetManagerMSP.client')"
+      Admins:
+        Type: Signature
+        Rule: "OR('FleetManagerMSP.admin')"
+      Endorsement:
+        Type: Signature
+        Rule: "OR('FleetManagerMSP.peer')"
+
+  - &RepairShop
+    Name: RepairShopMSP
+    ID: RepairShopMSP
+    MSPDir: ./organizations/peerOrganizations/repairshop.demo.com/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('RepairShopMSP.admin', 'RepairShopMSP.peer', 'RepairShopMSP.client')"
+      Writers:
+        Type: Signature
+        Rule: "OR('RepairShopMSP.admin', 'RepairShopMSP.client')"
+      Admins:
+        Type: Signature
+        Rule: "OR('RepairShopMSP.admin')"
+      Endorsement:
+        Type: Signature
+        Rule: "OR('RepairShopMSP.peer')"
+
+  - &InsuranceProvider
+    Name: InsuranceProviderMSP
+    ID: InsuranceProviderMSP
+    MSPDir: ./organizations/peerOrganizations/insuranceprovider.demo.com/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('InsuranceProviderMSP.admin', 'InsuranceProviderMSP.peer', 'InsuranceProviderMSP.client')"
+      Writers:
+        Type: Signature
+        Rule: "OR('InsuranceProviderMSP.admin')"
+      Admins:
+        Type: Signature
+        Rule: "OR('InsuranceProviderMSP.admin')"
+      Endorsement:
+        Type: Signature
+        Rule: "OR('InsuranceProviderMSP.peer')"
+
+  - &Vehicles
+    Name: VehiclesMSP
+    ID: VehiclesMSP
+    MSPDir: ./organizations/peerOrganizations/vehicles.demo.com/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('VehiclesMSP.admin', 'VehiclesMSP.peer', 'VehiclesMSP.client')"
+      Writers:
+        Type: Signature
+        Rule: "OR('VehiclesMSP.admin', 'VehiclesMSP.client')"
+      Admins:
+        Type: Signature
+        Rule: "OR('VehiclesMSP.admin')"
+      Endorsement:
+        Type: Signature
+        Rule: "OR('VehiclesMSP.peer')"
+
+  - &OrdererOrg
+    Name: OrdererMSP
+    ID: OrdererMSP
+    MSPDir: ./organizations/ordererOrganizations/orderer.demo.com/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('OrdererMSP.member')"
+      Writers:
+        Type: Signature
+        Rule: "OR('OrdererMSP.member')"
+      Admins:
+        Type: Signature
+        Rule: "OR('OrdererMSP.admin')"
+      Endorsement:
+        Type: Signature
+        Rule: "OR('OrdererMSP.member')"
+    OrdererEndpoints:
+      - orderer.demo.com:7050
+
+Capabilities:
+  Channel: &ChannelCapabilities
+    V2_0: true
+
+  Ordered: &OrdererCapabilities
+    V2_0: true
+  
+  Application: &ApplicationCapabilities
+    V2_0: true
+    v1_4: true
+
+Application: &ApplicationDefaults
+  Policies:
+    Readers:
+        Type: ImplicitMeta
+        Rule: "ANY Readers"
+    Writers:
+        Type: ImplicitMeta
+        Rule: "ANY Writers"
+    Admins:
+        Type: ImplicitMeta
+        Rule: "MAJORITY Admins"
+    LifecycleEndorsement:
+        Type: ImplicitMeta
+        Rule: "MAJORITY Endorsement"
+    Endorsement:
+        Type: ImplicitMeta
+        Rule: "MAJORITY Endorsement"
+
+  Capabilities:
+      <<: *ApplicationCapabilities
+
+Orderer: &OrdererDefaults
+  OrdererType: solo
+  Addresses:
+    - orderer.demo.com:7050
+  EtcdRaft:
+    Consenters:
+      - Host: orderer.demo.com
+        Port: 7050
+        ClientTLSCert: ./organizations/orderedOrganizations/orderer.demo.com/orderers/orderer.demo.com/tls/server.crt
+        ServerTLSCert: ./organizations/orderedOrganizations/orderer.demo.com/orderers/orderer.demo.com/tls/server.crt
+  BatchTimeout: 2s
+  BatchSize:
+    MaxMessageCount: 500
+    AbsoluteMaxBytes: 98 MB
+    PreferredMaxBytes: 2 MB
+  Policies:
+    Readers:
+        Type: ImplicitMeta
+        Rule: "ANY Readers"
+    Writers:
+        Type: ImplicitMeta
+        Rule: "ANY Writers"
+    Admins:
+        Type: ImplicitMeta
+        Rule: "MAJORITY Admins"
+    BlockValidation:
+        Type: ImplicitMeta
+        Rule: "ANY Writers"
+  Capabilities:
+    <<: *OrdererCapabilities
+
+Channel: &ChannelDefaults
+  Policies:
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+
+  Capabilities:
+    <<: *ChannelCapabilities
+
+Profiles:
+  OrdererGenesis:
+    <<: *ChannelDefaults
+    Orderer:
+      <<: *OrdererDefaults
+      Organizations:
+        - *OrdererOrg
+      Capabilities:
+        <<: *OrdererCapabilities
+    Consortiums:
+      FleetWatchConsortium:
+        Organizations:
+          - *FleetManager
+          - *RepairShop
+          - *InsuranceProvider
+          - *Vehicles
+
+  MainChannel:
+    Consortium: FleetWatchConsortium
+    <<: *ChannelDefaults
+    Application:
+      <<: *ApplicationDefaults
+      Organizations:
+        - *FleetManager
+        - *RepairShop
+        - *InsuranceProvider
+        - *Vehicles
+      Capabilities:
+        <<: *ApplicationCapabilities
