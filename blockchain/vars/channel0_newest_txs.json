@@ -1,0 +1,13 @@
+{
+  "block_hash": "GSklOouJgJmhH/jjJfTeqzHRD6qYLEln0DJXTKPi+L8=",
+  "data_hash": "CC5NhZ+rRw/U5p/bRjzM+jR/lFeqhIR6i8GV/q3K3xc=",
+  "number": "0",
+  "previous_hash": null,
+  "txs": [
+    {
+      "args": [],
+      "chaincode_id": null,
+      "tx_id": ""
+    }
+  ]
+}

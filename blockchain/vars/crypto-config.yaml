@@ -1,0 +1,36 @@
+---
+OrdererOrgs:
+  - Name: demo.com
+    Domain: demo.com
+    Specs:
+      - Hostname: orderer
+        SANS:
+          - 10.255.255.254
+
+PeerOrgs:
+  - Name: org0.com
+    Domain: org0.com
+    EnableNodeOUs: true
+    CA:
+      Hostname: ca
+      CommonName: ca.org0.com
+      Country: US
+      Province: North Carolina
+      Locality: Raleigh
+    Specs:
+      - Hostname: fleetmanager
+        CommonName: fleetmanager.org0.com
+        SANS:
+          - 10.255.255.254
+      - Hostname: repairshop
+        CommonName: repairshop.org0.com
+        SANS:
+          - 10.255.255.254
+      - Hostname: insuranceproviders
+        CommonName: insuranceproviders.org0.com
+        SANS:
+          - 10.255.255.254
+      - Hostname: vehicles
+        CommonName: vehicles.org0.com
+        SANS:
+          - 10.255.255.254

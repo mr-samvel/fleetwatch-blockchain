@@ -1,0 +1,22 @@
+fabric:
+  cas:
+  - "ca.org0.com"
+  
+  peers: 
+  - "fleetmanager.org0.com"
+  - "repairshop.org0.com"
+  - "insuranceproviders.org0.com"
+  - "vehicles.org0.com"
+  
+  orderers:
+  - "orderer.demo.com"
+
+  settings:
+    ca:
+      FABRIC_LOGGING_SPEC: DEBUG
+    peer:
+      FABRIC_LOGGING_SPEC: DEBUG
+    orderer:
+      FABRIC_LOGGING_SPEC: DEBUG
+
+  netname: "fleetwatch"

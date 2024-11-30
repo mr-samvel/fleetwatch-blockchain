@@ -1,0 +1,13 @@
+vehicles:
+    inserir pacotes de dados na blockchain
+
+fleetmanagers:
+    obter relações entre motoristas e diagnósticos ruins
+    obter último pacote de dados da frota que gerencia
+
+insurance providers:
+    obter último pacote de dados de um carro específico
+
+repair shops:
+    registrar manutenção
+    obter último diagnóstico de um carro específico
