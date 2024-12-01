@@ -1,15 +1,18 @@
 {
-  "name": "vehicles_chaincode",
-	"version": "1.0.0",
-	"description": "Chaincode for the vehicles",
-	"engines": {
-		"node": ">=8.4.0",
-		"npm": ">=5.3.0"
-	},
-	"scripts": { "start" : "node vehicles_cc.js" },
-	"engine-strict": true,
-	"license": "Apache-2.0",
+  "name": "vehicles-cc",
+  "version": "0.0.3",
+  "description": "Smart Contracts regarding Vehicles",
+  "main": "index.js",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "fabric-chaincode-node start"
+  },
+  "engineStrict": true,
+  "license": "Apache-2.0",
   "dependencies": {
-    "fabric-contract-api": "^2.5.7"
+    "fabric-contract-api": "^2.4.1",
+    "fabric-shim": "^2.4.1"
   }
 }

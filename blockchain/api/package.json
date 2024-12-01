@@ -1,0 +1,14 @@
+{
+  "name": "fleetwatch-api",
+  "version": "0.0.1",
+  "description": "",
+  "scripts": {
+    "api": "node app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.1",
+    "fabric-network": "^2.2.20"
+  }
+}
