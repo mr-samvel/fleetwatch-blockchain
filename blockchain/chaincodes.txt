@@ -1,5 +1,6 @@
 vehicles:
     inserir pacotes de dados na blockchain
+    inserir diagnóstico na blockchain
 
 fleetmanagers:
     obter relações entre motoristas e diagnósticos ruins
