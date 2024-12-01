@@ -3,28 +3,28 @@ from threading import Thread
 import random
 import requests
 
-class Veiculo:
+class Vehicle:
     def __init__(self, v_id: int, m_id: int) -> None:
         self.id: int = v_id
-        self.motorista_id: int = m_id
-        self.km_atual: int = random.randint(1, 100000)
+        self.driver_id: int = m_id
+        self.current_mileage: int = random.randint(1, 100000)
         
-    def coleta_metricas(self):
-        self.km_atual += random.randint(30, 300)
+    def gather_telemetry(self):
+        self.current_mileage += random.randint(30, 300)
 
-        metricas = {}
-        metricas["vehicle_id"] = self.id
-        metricas["driver_id"] = self.motorista_id
-        metricas["avg_engine_load"] = random.randint(1, 100)
-        metricas["avg_engine_rpm"] = random.randint(700, 6500)
-        metricas["coolant_temp"] = random.randint(80, 110)
-        metricas["sys_voltage"] = random.randint(10, 17)
-        metricas["fuel_rate"] = random.randint(1, 100)
-        metricas["ambient_temp"] = random.randint(-10, 40)
-        metricas["mileage"] = self.km_atual
-        return {"telemetry": metricas}
+        telemetry = {}
+        telemetry["vehicle_id"] = self.id
+        telemetry["driver_id"] = self.driver_id
+        telemetry["avg_engine_load"] = random.randint(1, 100)
+        telemetry["avg_engine_rpm"] = random.randint(700, 6500)
+        telemetry["coolant_temp"] = random.randint(80, 110)
+        telemetry["sys_voltage"] = random.randint(10, 17)
+        telemetry["fuel_rate"] = random.randint(1, 100)
+        telemetry["ambient_temp"] = random.randint(-10, 40)
+        telemetry["mileage"] = self.current_mileage
+        return {"telemetry": telemetry}
             
-    def coleta_diagnostico(self):
+    def gather_diagnostics(self):
         diagnosticos = [
             "Misfires",
             "Catalytic Converter Failure",
@@ -40,19 +40,20 @@ class Veiculo:
             "Engine Overheating",
             "ABS Circuit Malfunction"
         ]
-        motorista_ruim = self.motorista_id % 2 == 0 and self.motorista_id <= 4 # simula motorista que desgasta carro
-        prob_problema = random.randint(0, 10)
-        carro_com_problema = prob_problema >= 6 if motorista_ruim else prob_problema > 9
-        return {"diagnostic": random.sample(diagnosticos, random.randint(1, 3))} if carro_com_problema else None
+        is_bad_driver = self.driver_id % 2 == 0 and self.driver_id <= 4 # simula motorista que desgasta carro
+        defect_probability = random.randint(0, 10)
+        is_car_defective = defect_probability >= 6 if is_bad_driver else defect_probability > 9
+        return {"diagnostic": random.sample(diagnosticos, random.randint(1, 3))} if is_car_defective else None
 
-def coletar_dados_veiculo():
-    veiculo = Veiculo(random.randint(0, 1000), random.randint(0, 1000))
+def gather_vehicle_data():
+    vehicle = Vehicle(random.randint(0, 1000), random.randint(0, 1000))
     while True:
-        telemetria = veiculo.coleta_metricas()
-        diagnostico = veiculo.coleta_diagnostico()
-        print(f'Nova coleta para veículo {veiculo.id}.\n>>>Telemetria: {telemetria}\n>>>Diagnostico: {diagnostico}')
+        telemetry = vehicle.gather_telemetry()
+        diagnostics = vehicle.gather_diagnostics()
+        # TODO submit telemetry and diagnostics (if != None) to blockchain
+        print(f'Nova coleta para veículo {vehicle.id}.\n>>>Telemetria: {telemetry}\n>>>Diagnostico: {diagnostics}')
         sleep(random.randint(1, 10))
 
 for _ in range(5):
-    Thread(target=coletar_dados_veiculo).start()
+    Thread(target=gather_vehicle_data).start()
         

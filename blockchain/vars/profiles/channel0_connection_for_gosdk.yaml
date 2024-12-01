@@ -1,0 +1,247 @@
+---
+# ROOTPATH should be set to the absolute path of crypto material starting directory
+# for example: export ROOTPATH=/home/ubuntu/mywork/vars/keyfiles
+"name": "fleetwatch"
+"x-type": "hlfv-2.3.0"
+"version": "1.0.0"
+"client":
+  "organization": "org0.com"
+  "cryptoconfig":
+    "path": "${ROOTPATH}"
+  "connection":
+    "timeout":
+      "peer":
+        "endorser": "300"
+        "eventHub": "300"
+        "eventReg": "300"
+      "orderer": "300"
+  "credentialStore":
+    "path": "/tmp/state-store"
+    "cryptoStore":
+      "path": "/tmp/msp"
+  "BCCSP":
+    "security":
+      "enabled": "true"
+      "default":
+        "provider": "SW"
+      "hashAlgorithm": "SHA2"
+      "softVerify": "true"
+      "level": "256"
+
+"channels":
+  "channel0":
+    "orderers":
+    - "orderer.demo.com"
+    "peers":
+      "fleetmanager.org0.com":
+        "endorsingPeer": true
+        "chaincodeQuery": true
+        "eventSource": true
+      "repairshop.org0.com":
+        "endorsingPeer": true
+        "chaincodeQuery": true
+        "eventSource": true
+      "insuranceproviders.org0.com":
+        "endorsingPeer": true
+        "chaincodeQuery": true
+        "eventSource": true
+      "vehicles.org0.com":
+        "endorsingPeer": true
+        "chaincodeQuery": true
+        "eventSource": true
+
+"organizations":
+  "demo.com":
+    "mspid": "demo-com"
+    "cryptoPath": "ordererOrganizations/demo.com/users/{username}@demo.com/msp"
+    "orderers":
+    - "orderer.demo.com"
+    "certificateAuthorities":
+  "org0.com":
+    "mspid": "org0-com"
+    "cryptoPath": "peerOrganizations/org0.com/users/{username}@org0.com/msp"
+    "peers":
+    - "fleetmanager.org0.com"
+    - "repairshop.org0.com"
+    - "insuranceproviders.org0.com"
+    - "vehicles.org0.com"
+    "certificateAuthorities":
+    - "ca.org0.com"
+
+"orderers":
+  "orderer.demo.com":
+    "url": "grpcs://10.255.255.254:7109"
+    "grpcOptions":
+      "ssl-target-name-override": "orderer.demo.com"
+    "tlsCACerts":
+      "pem": |
+        -----BEGIN CERTIFICATE-----
+        MIICkDCCAjagAwIBAgIUQXyW7EI+qPQeec7ATOioDLcPrTowCgYIKoZIzj0EAwIw
+        ZDELMAkGA1UEBhMCVVMxFzAVBgNVBAgMDk5vcnRoIENhcm9saW5hMRAwDgYDVQQH
+        DAdSYWxlaWdoMREwDwYDVQQKDAhkZW1vLmNvbTEXMBUGA1UEAwwOdGxzY2EuZGVt
+        by5jb20wHhcNMjQxMTMwMTg1MTA5WhcNMzQxMTI4MTg1MTA5WjBkMQswCQYDVQQG
+        EwJVUzEXMBUGA1UECAwOTm9ydGggQ2Fyb2xpbmExEDAOBgNVBAcMB1JhbGVpZ2gx
+        ETAPBgNVBAoMCGRlbW8uY29tMRcwFQYDVQQDDA50bHNjYS5kZW1vLmNvbTBZMBMG
+        ByqGSM49AgEGCCqGSM49AwEHA0IABHrqmOKSRVyCKnGD8tYl3ApGhXysxcTuCbPj
+        /fKfb++0y349WXhoEb3v3D5L9NywYRY+fY6XUGCm5IVfxN6Phb2jgcUwgcIwHQYD
+        VR0OBBYEFPOFyRccgwr6aXl4CYTn3HC3S5nNMB8GA1UdIwQYMBaAFPOFyRccgwr6
+        aXl4CYTn3HC3S5nNMA8GA1UdEwEB/wQFMAMBAf8wDgYDVR0PAQH/BAQDAgGmMB0G
+        A1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjBABgNVHREEOTA3hwQK///+gg50
+        bHNjYS5kZW1vLmNvbYIOdGxzY2EtZGVtby1jb22CCWxvY2FsaG9zdIcEfwAAATAK
+        BggqhkjOPQQDAgNIADBFAiEA+ZaWsrHVQvmlaZIdXVu1hlQFUb92JJ9FqHlNTDqM
+        PKkCIBbsxaexLaB6bPS3pi+hNNwCUL8zlS+FLj8ulBess99L
+        -----END CERTIFICATE-----
+
+"peers":
+  "fleetmanager.org0.com":
+    "url": "grpcs://10.255.255.254:7101"
+    "grpcOptions":
+      "ssl-target-name-override": "fleetmanager.org0.com"
+    "tlsCACerts":
+      "pem": |
+        -----BEGIN CERTIFICATE-----
+        MIICkTCCAjagAwIBAgIUBnni4e3CKiJ2jBSSHu6bWfHv9gIwCgYIKoZIzj0EAwIw
+        ZDELMAkGA1UEBhMCVVMxFzAVBgNVBAgMDk5vcnRoIENhcm9saW5hMRAwDgYDVQQH
+        DAdSYWxlaWdoMREwDwYDVQQKDAhvcmcwLmNvbTEXMBUGA1UEAwwOdGxzY2Eub3Jn
+        MC5jb20wHhcNMjQxMTMwMTg1MTIwWhcNMzQxMTI4MTg1MTIwWjBkMQswCQYDVQQG
+        EwJVUzEXMBUGA1UECAwOTm9ydGggQ2Fyb2xpbmExEDAOBgNVBAcMB1JhbGVpZ2gx
+        ETAPBgNVBAoMCG9yZzAuY29tMRcwFQYDVQQDDA50bHNjYS5vcmcwLmNvbTBZMBMG
+        ByqGSM49AgEGCCqGSM49AwEHA0IABOSEOFR7WsKJKvuVuVC4fllc4qBrbbaC6RU4
+        y/0vsK8sTC0y0BMwQTwZlEUsPWfAO2kmXUxxzKS6xz8XzR/tt6WjgcUwgcIwHQYD
+        VR0OBBYEFHoKGbqmjpz8cAQced4fAVeeT2Y8MB8GA1UdIwQYMBaAFHoKGbqmjpz8
+        cAQced4fAVeeT2Y8MA8GA1UdEwEB/wQFMAMBAf8wDgYDVR0PAQH/BAQDAgGmMB0G
+        A1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjBABgNVHREEOTA3hwQK///+gg50
+        bHNjYS5vcmcwLmNvbYIOdGxzY2Etb3JnMC1jb22CCWxvY2FsaG9zdIcEfwAAATAK
+        BggqhkjOPQQDAgNJADBGAiEA56Wbvm4yQ+dUz7kkJ30bTbhvtr4ng8m6nQVQzGP0
+        CakCIQDkiH7zBLrH1IdQS+47Ge6B814PUjZkMiL5FSWZVtMlSQ==
+        -----END CERTIFICATE-----
+
+  "repairshop.org0.com":
+    "url": "grpcs://10.255.255.254:7102"
+    "grpcOptions":
+      "ssl-target-name-override": "repairshop.org0.com"
+    "tlsCACerts":
+      "pem": |
+        -----BEGIN CERTIFICATE-----
+        MIICkTCCAjagAwIBAgIUBnni4e3CKiJ2jBSSHu6bWfHv9gIwCgYIKoZIzj0EAwIw
+        ZDELMAkGA1UEBhMCVVMxFzAVBgNVBAgMDk5vcnRoIENhcm9saW5hMRAwDgYDVQQH
+        DAdSYWxlaWdoMREwDwYDVQQKDAhvcmcwLmNvbTEXMBUGA1UEAwwOdGxzY2Eub3Jn
+        MC5jb20wHhcNMjQxMTMwMTg1MTIwWhcNMzQxMTI4MTg1MTIwWjBkMQswCQYDVQQG
+        EwJVUzEXMBUGA1UECAwOTm9ydGggQ2Fyb2xpbmExEDAOBgNVBAcMB1JhbGVpZ2gx
+        ETAPBgNVBAoMCG9yZzAuY29tMRcwFQYDVQQDDA50bHNjYS5vcmcwLmNvbTBZMBMG
+        ByqGSM49AgEGCCqGSM49AwEHA0IABOSEOFR7WsKJKvuVuVC4fllc4qBrbbaC6RU4
+        y/0vsK8sTC0y0BMwQTwZlEUsPWfAO2kmXUxxzKS6xz8XzR/tt6WjgcUwgcIwHQYD
+        VR0OBBYEFHoKGbqmjpz8cAQced4fAVeeT2Y8MB8GA1UdIwQYMBaAFHoKGbqmjpz8
+        cAQced4fAVeeT2Y8MA8GA1UdEwEB/wQFMAMBAf8wDgYDVR0PAQH/BAQDAgGmMB0G
+        A1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjBABgNVHREEOTA3hwQK///+gg50
+        bHNjYS5vcmcwLmNvbYIOdGxzY2Etb3JnMC1jb22CCWxvY2FsaG9zdIcEfwAAATAK
+        BggqhkjOPQQDAgNJADBGAiEA56Wbvm4yQ+dUz7kkJ30bTbhvtr4ng8m6nQVQzGP0
+        CakCIQDkiH7zBLrH1IdQS+47Ge6B814PUjZkMiL5FSWZVtMlSQ==
+        -----END CERTIFICATE-----
+
+  "insuranceproviders.org0.com":
+    "url": "grpcs://10.255.255.254:7103"
+    "grpcOptions":
+      "ssl-target-name-override": "insuranceproviders.org0.com"
+    "tlsCACerts":
+      "pem": |
+        -----BEGIN CERTIFICATE-----
+        MIICkTCCAjagAwIBAgIUBnni4e3CKiJ2jBSSHu6bWfHv9gIwCgYIKoZIzj0EAwIw
+        ZDELMAkGA1UEBhMCVVMxFzAVBgNVBAgMDk5vcnRoIENhcm9saW5hMRAwDgYDVQQH
+        DAdSYWxlaWdoMREwDwYDVQQKDAhvcmcwLmNvbTEXMBUGA1UEAwwOdGxzY2Eub3Jn
+        MC5jb20wHhcNMjQxMTMwMTg1MTIwWhcNMzQxMTI4MTg1MTIwWjBkMQswCQYDVQQG
+        EwJVUzEXMBUGA1UECAwOTm9ydGggQ2Fyb2xpbmExEDAOBgNVBAcMB1JhbGVpZ2gx
+        ETAPBgNVBAoMCG9yZzAuY29tMRcwFQYDVQQDDA50bHNjYS5vcmcwLmNvbTBZMBMG
+        ByqGSM49AgEGCCqGSM49AwEHA0IABOSEOFR7WsKJKvuVuVC4fllc4qBrbbaC6RU4
+        y/0vsK8sTC0y0BMwQTwZlEUsPWfAO2kmXUxxzKS6xz8XzR/tt6WjgcUwgcIwHQYD
+        VR0OBBYEFHoKGbqmjpz8cAQced4fAVeeT2Y8MB8GA1UdIwQYMBaAFHoKGbqmjpz8
+        cAQced4fAVeeT2Y8MA8GA1UdEwEB/wQFMAMBAf8wDgYDVR0PAQH/BAQDAgGmMB0G
+        A1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjBABgNVHREEOTA3hwQK///+gg50
+        bHNjYS5vcmcwLmNvbYIOdGxzY2Etb3JnMC1jb22CCWxvY2FsaG9zdIcEfwAAATAK
+        BggqhkjOPQQDAgNJADBGAiEA56Wbvm4yQ+dUz7kkJ30bTbhvtr4ng8m6nQVQzGP0
+        CakCIQDkiH7zBLrH1IdQS+47Ge6B814PUjZkMiL5FSWZVtMlSQ==
+        -----END CERTIFICATE-----
+
+  "vehicles.org0.com":
+    "url": "grpcs://10.255.255.254:7104"
+    "grpcOptions":
+      "ssl-target-name-override": "vehicles.org0.com"
+    "tlsCACerts":
+      "pem": |
+        -----BEGIN CERTIFICATE-----
+        MIICkTCCAjagAwIBAgIUBnni4e3CKiJ2jBSSHu6bWfHv9gIwCgYIKoZIzj0EAwIw
+        ZDELMAkGA1UEBhMCVVMxFzAVBgNVBAgMDk5vcnRoIENhcm9saW5hMRAwDgYDVQQH
+        DAdSYWxlaWdoMREwDwYDVQQKDAhvcmcwLmNvbTEXMBUGA1UEAwwOdGxzY2Eub3Jn
+        MC5jb20wHhcNMjQxMTMwMTg1MTIwWhcNMzQxMTI4MTg1MTIwWjBkMQswCQYDVQQG
+        EwJVUzEXMBUGA1UECAwOTm9ydGggQ2Fyb2xpbmExEDAOBgNVBAcMB1JhbGVpZ2gx
+        ETAPBgNVBAoMCG9yZzAuY29tMRcwFQYDVQQDDA50bHNjYS5vcmcwLmNvbTBZMBMG
+        ByqGSM49AgEGCCqGSM49AwEHA0IABOSEOFR7WsKJKvuVuVC4fllc4qBrbbaC6RU4
+        y/0vsK8sTC0y0BMwQTwZlEUsPWfAO2kmXUxxzKS6xz8XzR/tt6WjgcUwgcIwHQYD
+        VR0OBBYEFHoKGbqmjpz8cAQced4fAVeeT2Y8MB8GA1UdIwQYMBaAFHoKGbqmjpz8
+        cAQced4fAVeeT2Y8MA8GA1UdEwEB/wQFMAMBAf8wDgYDVR0PAQH/BAQDAgGmMB0G
+        A1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjBABgNVHREEOTA3hwQK///+gg50
+        bHNjYS5vcmcwLmNvbYIOdGxzY2Etb3JnMC1jb22CCWxvY2FsaG9zdIcEfwAAATAK
+        BggqhkjOPQQDAgNJADBGAiEA56Wbvm4yQ+dUz7kkJ30bTbhvtr4ng8m6nQVQzGP0
+        CakCIQDkiH7zBLrH1IdQS+47Ge6B814PUjZkMiL5FSWZVtMlSQ==
+        -----END CERTIFICATE-----
+
+"certificateAuthorities":
+  "ca.org0.com":
+    "url": "https://10.255.255.254:7100"
+    "tlsCACerts":
+      "pem":
+      - |
+        -----BEGIN CERTIFICATE-----
+        MIIChTCCAiqgAwIBAgIUWaUWrND78/gAcStpl2qyev9bDHEwCgYIKoZIzj0EAwIw
+        YTELMAkGA1UEBhMCVVMxFzAVBgNVBAgMDk5vcnRoIENhcm9saW5hMRAwDgYDVQQH
+        DAdSYWxlaWdoMREwDwYDVQQKDAhvcmcwLmNvbTEUMBIGA1UEAwwLY2Eub3JnMC5j
+        b20wHhcNMjQxMTMwMTg1MTE5WhcNMzQxMTI4MTg1MTE5WjBhMQswCQYDVQQGEwJV
+        UzEXMBUGA1UECAwOTm9ydGggQ2Fyb2xpbmExEDAOBgNVBAcMB1JhbGVpZ2gxETAP
+        BgNVBAoMCG9yZzAuY29tMRQwEgYDVQQDDAtjYS5vcmcwLmNvbTBZMBMGByqGSM49
+        AgEGCCqGSM49AwEHA0IABDUwiby4gmOhphB0e/FMwj+ttmwdvV7/LjljrsL5q0QC
+        MSc0nlhSO44j4YjzFsMM041uXD+lq+ShO3Eq/qQB7b2jgb8wgbwwHQYDVR0OBBYE
+        FAc9PfVLPzEyDP0kQ5Tei3eoiqqmMB8GA1UdIwQYMBaAFAc9PfVLPzEyDP0kQ5Te
+        i3eoiqqmMA8GA1UdEwEB/wQFMAMBAf8wDgYDVR0PAQH/BAQDAgGmMB0GA1UdJQQW
+        MBQGCCsGAQUFBwMBBggrBgEFBQcDAjA6BgNVHREEMzAxhwQK///+ggtjYS5vcmcw
+        LmNvbYILY2Etb3JnMC1jb22CCWxvY2FsaG9zdIcEfwAAATAKBggqhkjOPQQDAgNJ
+        ADBGAiEA18hJDAB/zPjq1xtKY60dFAo/vIjzbDpSuTiUBl9b5+QCIQDY79frVzyl
+        qS8kIP69ygaqHcAUJ4Pgd2Te7VRIR4L1lw==
+        -----END CERTIFICATE-----
+
+    "httpOptions":
+      "verify": "false"
+    "caName": "ca"
+    "registrar":
+      "enrollId": "admin"
+      "enrollSecret": "adminpw"
+
+"entityMatchers":
+  "orderer":
+  - "mappedHost": "orderer.demo.com"
+    "pattern": "(\\w*)orderer.demo.com(\\w*)"
+    "sslTargetOverrideUrlSubstitutionExp": "orderer.demo.com"
+    "urlSubstitutionExp": "10.255.255.254:7109"
+  
+  "peer":
+  - "mappedHost": "fleetmanager.org0.com"
+    "pattern": "(\\w*)fleetmanager.org0.com(\\w*)"
+    "sslTargetOverrideUrlSubstitutionExp": "fleetmanager.org0.com"
+    "urlSubstitutionExp": "10.255.255.254:7101"
+  - "mappedHost": "repairshop.org0.com"
+    "pattern": "(\\w*)repairshop.org0.com(\\w*)"
+    "sslTargetOverrideUrlSubstitutionExp": "repairshop.org0.com"
+    "urlSubstitutionExp": "10.255.255.254:7102"
+  - "mappedHost": "insuranceproviders.org0.com"
+    "pattern": "(\\w*)insuranceproviders.org0.com(\\w*)"
+    "sslTargetOverrideUrlSubstitutionExp": "insuranceproviders.org0.com"
+    "urlSubstitutionExp": "10.255.255.254:7103"
+  - "mappedHost": "vehicles.org0.com"
+    "pattern": "(\\w*)vehicles.org0.com(\\w*)"
+    "sslTargetOverrideUrlSubstitutionExp": "vehicles.org0.com"
+    "urlSubstitutionExp": "10.255.255.254:7104"
+  
+  "certificateAuthorities":
+  - "mappedHost": "ca.org0.com"
+    "pattern": "(\\w*)ca.org0.com(\\w*)"
+    "sslTargetOverrideUrlSubstitutionExp": "ca.org0.com"
+    "urlSubstitutionExp": "10.255.255.254:7100"
