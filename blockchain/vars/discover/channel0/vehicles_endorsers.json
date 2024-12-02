@@ -4,19 +4,19 @@
     "G0": [
       {
         "MSPID": "org0-com",
-        "Endpoint": "10.255.255.254:7104"
-      },
-      {
-        "MSPID": "org0-com",
-        "Endpoint": "10.255.255.254:7102"
-      },
-      {
-        "MSPID": "org0-com",
         "Endpoint": "10.255.255.254:7101"
       },
       {
         "MSPID": "org0-com",
         "Endpoint": "10.255.255.254:7103"
+      },
+      {
+        "MSPID": "org0-com",
+        "Endpoint": "10.255.255.254:7104"
+      },
+      {
+        "MSPID": "org0-com",
+        "Endpoint": "10.255.255.254:7102"
       }
     ]
   },

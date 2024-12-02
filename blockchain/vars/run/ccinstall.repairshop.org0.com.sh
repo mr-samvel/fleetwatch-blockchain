@@ -9,10 +9,10 @@ export CORE_PEER_MSPCONFIGPATH=/vars/keyfiles/peerOrganizations/org0.com/users/A
 cd /go/src/github.com/chaincode/vehicles
 
 
-if [ ! -f "vehicles_node_0.0.3.tar.gz" ]; then
-  peer lifecycle chaincode package vehicles_node_0.0.3.tar.gz \
+if [ ! -f "vehicles_node_1.0.tar.gz" ]; then
+  peer lifecycle chaincode package vehicles_node_1.0.tar.gz \
     -p /go/src/github.com/chaincode/vehicles/node/ \
-    --lang node --label vehicles_0.0.3
+    --lang node --label vehicles_1.0
 fi
 
-peer lifecycle chaincode install vehicles_node_0.0.3.tar.gz
+peer lifecycle chaincode install vehicles_node_1.0.tar.gz
