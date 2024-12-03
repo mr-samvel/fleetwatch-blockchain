@@ -1,6 +1,9 @@
 Pra rodar:
+
 ganache-cli
+
 truffle migrate (em outro terminal pois o ganache-cli irá ficar ocupando o outro)
+
 npm start
 
 Ver no console dá página web que ele tá retornando um objeto com valores:
