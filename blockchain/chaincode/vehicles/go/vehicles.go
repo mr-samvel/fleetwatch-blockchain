@@ -7,12 +7,10 @@ import (
 	"github.com/hyperledger/fabric-contract-api-go/contractapi"
 )
 
-// VehiclesContract provides functions for managing vehicles
 type VehiclesContract struct {
 	contractapi.Contract
 }
 
-// TelemetryData represents the telemetry information for a vehicle
 type TelemetryData struct {
 	VehicleID     int `json:"vehicle_id"`
 	Timestamp     int `json:"timestamp"`
