@@ -9,7 +9,7 @@ export CORE_PEER_MSPCONFIGPATH=/vars/keyfiles/peerOrganizations/org0.com/users/A
 export ORDERER_ADDRESS=10.255.255.254:7109
 export ORDERER_TLS_CA=/vars/keyfiles/ordererOrganizations/demo.com/orderers/orderer.demo.com/tls/ca.crt
 
-peer lifecycle chaincode queryinstalled -O json | jq -r '.installed_chaincodes | .[] | select(.package_id|startswith("vehicles_1.0:"))' > ccstatus.json
+peer lifecycle chaincode queryinstalled -O json | jq -r '.installed_chaincodes | .[] | select(.package_id|startswith("vehicles_0.0.1:"))' > ccstatus.json
 
 PKID=$(jq '.package_id' ccstatus.json | xargs)
 REF=$(jq '.references.channel0' ccstatus.json)
@@ -26,17 +26,17 @@ fi
 
 
 export CORE_PEER_LOCALMSPID=org0-com
-export CORE_PEER_TLS_ROOTCERT_FILE=/vars/keyfiles/peerOrganizations/org0.com/peers/vehicles.org0.com/tls/ca.crt
+export CORE_PEER_TLS_ROOTCERT_FILE=/vars/keyfiles/peerOrganizations/org0.com/peers/insuranceproviders.org0.com/tls/ca.crt
 export CORE_PEER_MSPCONFIGPATH=/vars/keyfiles/peerOrganizations/org0.com/users/Admin@org0.com/msp
-export CORE_PEER_ADDRESS=10.255.255.254:7104
+export CORE_PEER_ADDRESS=10.255.255.254:7103
 
 # approved=$(peer lifecycle chaincode checkcommitreadiness --channelID channel0 \
-#   --name vehicles --version 1.0 --init-required --sequence $SEQUENCE --tls \
+#   --name vehicles --version 0.0.1 --init-required --sequence $SEQUENCE --tls \
 #   --cafile $ORDERER_TLS_CA --output json | jq -r '.approvals.org0-com')
 
 # if [[ "$approved" == "false" ]]; then
   peer lifecycle chaincode approveformyorg --channelID channel0 --name vehicles \
-    --version 1.0 --package-id $PKID \
+    --version 0.0.1 --package-id $PKID \
   --init-required \
     --sequence $SEQUENCE -o $ORDERER_ADDRESS --tls --cafile $ORDERER_TLS_CA
 # fi

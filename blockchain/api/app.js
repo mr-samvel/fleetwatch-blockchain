@@ -18,7 +18,7 @@ async function connectToNetwork() {
         throw new Error("Identity for admin not found!")
     
     const gateway = new Gateway();
-    await gateway.connect(ccp, { wallet, identity: 'Admin', discovery: { enabled: true, asLocalhost: true } });
+    await gateway.connect(ccp, { wallet, identity: 'Admin', discovery: { enabled: true, asLocalhost: false } });
 
     return await gateway.getNetwork('channel0');
 }
@@ -32,7 +32,7 @@ app.post('/telemetry/:vehicleId', async (req, res) => {
     const { telemetry } = req.body;
 
     try {
-        const contract = await getContract('VehiclesContract');
+        const contract = await getContract('vehicles');
         await contract.submitTransaction('recordTelemetry', vehicleId, JSON.stringify(telemetry));
         res.status(200).send('Telemetry recorded successfully.');
     } catch (error) {
@@ -46,7 +46,7 @@ app.post('/diagnostics/:vehicleId', async (req, res) => {
     const { diagnostics } = req.body;
 
     try {
-        const contract = await getContract('VehiclesContract');
+        const contract = await getContract('vehicles');
         await contract.submitTransaction('recordDiagnostics', vehicleId, JSON.stringify(diagnostics));
         res.status(200).send('Diagnostics recorded successfully.');
     } catch (error) {
@@ -55,8 +55,4 @@ app.post('/diagnostics/:vehicleId', async (req, res) => {
     }
 });
 
-app.listen(3000, () => {
-    connectToNetwork().then((nw) => {
-        console.log(nw);
-    });
-});
+app.listen(3000);

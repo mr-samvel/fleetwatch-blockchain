@@ -1,0 +1,9 @@
+{
+  "network-configs": {
+    "fleetwatch": {
+      "name": "fleetwatch",
+      "profile": "./connection-profile/channel0_profile.json"
+    }
+  },
+  "license": "Apache-2.0"
+}

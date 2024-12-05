@@ -10,7 +10,7 @@ discover endorsers --peerTLSCA $PEER_TLS_ROOTCERT_FILE \
   --userKey $ADMINPRIVATEKEY \
   --userCert $ADMINCERT \
   --MSP org0-com --channel channel0 \
-  --server 10.255.255.254:7102 \
+  --server 10.255.255.254:7101 \
   --chaincode vehicles | jq '.[0]' | \
   jq 'del(.. | .Identity?)' | jq 'del(.. | .LedgerHeight?)' \
   > /vars/discover/channel0_vehicles_endorsers.json
@@ -19,4 +19,4 @@ discover config --peerTLSCA $PEER_TLS_ROOTCERT_FILE \
   --userKey $ADMINPRIVATEKEY \
   --userCert $ADMINCERT \
   --MSP org0-com --channel channel0 \
-  --server 10.255.255.254:7102 > /vars/discover/channel0_config.json
+  --server 10.255.255.254:7101 > /vars/discover/channel0_config.json

@@ -12,5 +12,3 @@ insurance providers:
 repair shops:
     registrar manutenção
     obter último diagnóstico de um carro específico
-
-https://dilumbandara.medium.com/custom-hyperledger-fabric-network-with-minifabric-fd362ee34343

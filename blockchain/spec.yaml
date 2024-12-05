@@ -5,7 +5,7 @@ fabric:
   peers: 
   - "fleetmanager.org0.com"
   - "repairshop.org0.com"
-  - "insuranceproviders.org0.com"
+  - "insuranceprovider.org0.com"
   - "vehicles.org0.com"
   
   orderers:
