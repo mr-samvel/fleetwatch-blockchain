@@ -36,7 +36,7 @@ func (c *VehiclesContract) RecordTelemetry(ctx contractapi.TransactionContextInt
 		return fmt.Errorf("failed to unmarshal telemetry data: %v", err)
 	}
 
-	telemetryKey, err := ctx.GetStub().CreateCompositeKey("vehicle", []string{vehicleId, "telemetry"})
+	telemetryKey, err := ctx.GetStub().CreateCompositeKey("vehicle-telemetry", []string{vehicleId})
 	if err != nil {
 		return fmt.Errorf("failed to create composite key: %v", err)
 	}
@@ -56,7 +56,7 @@ func (c *VehiclesContract) RecordDiagnostics(ctx contractapi.TransactionContextI
 		return fmt.Errorf("failed to unmarshal diagnostic data: %v", err)
 	}
 
-	diagnosticKey, err := ctx.GetStub().CreateCompositeKey("vehicle", []string{vehicleID, "diagnostic"})
+	diagnosticKey, err := ctx.GetStub().CreateCompositeKey("vehicle-diagnostic", []string{vehicleID})
 	if err != nil {
 		return fmt.Errorf("failed to create composite key: %v", err)
 	}

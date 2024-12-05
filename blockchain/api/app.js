@@ -55,4 +55,16 @@ app.post('/diagnostics/:vehicleId', async (req, res) => {
     }
 });
 
+app.get('/status', async (req, res) => {
+    try {
+        const contract = await getContract('fleetmanager');
+        const result = await contract.evaluateTransaction('GetAllVehicleStatus');
+        res.status(200).json(result.toJSON())
+    } catch (error) {
+        console.error(`Failed to submit transaction: ${error}`);
+        res.status(500).send(`Error: ${error.message}`);
+    }
+});
+
+
 app.listen(3000);

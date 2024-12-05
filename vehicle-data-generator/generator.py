@@ -14,6 +14,7 @@ class Vehicle:
         self.current_mileage += random.randint(30, 300)
 
         telemetry = {}
+        telemetry["vehicle_id"] = self.id
         telemetry["driver_id"] = self.driver_id
         telemetry["timestamp"] = int(time())
         telemetry["avg_engine_load"] = random.randint(1, 100)
