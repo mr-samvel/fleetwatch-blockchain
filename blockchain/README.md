@@ -14,3 +14,7 @@ com rede previamente levantada
 pra levantar outros chaincodes
 
 ./minifab ccup -l go -n <nome_do_chaincode> -v <versao_do_chaincode> -d false
+
+pra visualizar o couchdb entrar na url: http://localhost:7108/_utils
+admin
+adminpw
