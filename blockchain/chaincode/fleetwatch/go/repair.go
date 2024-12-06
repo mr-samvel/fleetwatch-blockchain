@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+
 	"github.com/hyperledger/fabric-contract-api-go/contractapi"
 )
 
@@ -11,24 +12,24 @@ type RepairShopContract struct {
 }
 
 type MaintenanceReport struct {
-	Timestamp   int      `json:"timestamp"`
+	Timestamp int `json:"timestamp"`
 }
 
-func (c *RepairShopContract) GetLatestVehicleDiagnostic(ctx contractapi.TransactionContextInterface, vehicleID string) (*DiagnosticData, error) {
+func (c *RepairShopContract) GetLatestVehicleDiagnostic(ctx contractapi.TransactionContextInterface, vehicleID string) (*VehicleDiagnosticAsset, error) {
 	telemetryKey, err := ctx.GetStub().CreateCompositeKey("vehicle-diagnostic", []string{vehicleID})
 	if err != nil {
 		return nil, fmt.Errorf("failed to create composite key: %v", err)
 	}
 
 	latestDiagnostic, err := ctx.GetStub().GetState(telemetryKey)
-    if err != nil {
-            return nil, fmt.Errorf("Failed to get asset: %s with error: %s", vehicleID, err)
-    }
-    if latestDiagnostic == nil {
-            return nil, fmt.Errorf("Asset not found: %s", vehicleID)
-    }
+	if err != nil {
+		return nil, fmt.Errorf("failed to get asset: %s with error: %s", vehicleID, err)
+	}
+	if latestDiagnostic == nil {
+		return nil, fmt.Errorf("asset not found: %s", vehicleID)
+	}
 
-	var resDiagnostic DiagnosticData
+	var resDiagnostic VehicleDiagnosticAsset
 	err = json.Unmarshal(latestDiagnostic, &resDiagnostic)
 	if err != nil {
 		return nil, fmt.Errorf("failed to unmarshal telemetry: %v", err)

@@ -48,6 +48,7 @@ class Vehicle:
         
         if is_car_defective:
             diagnostico = {}
+            diagnostico["driver_id"] = self.driver_id
             diagnostico["timestamp"] = int(time())
             diagnostico["diagnostics"] = random.sample(diagnosticos, random.randint(1, 3))
             return diagnostico

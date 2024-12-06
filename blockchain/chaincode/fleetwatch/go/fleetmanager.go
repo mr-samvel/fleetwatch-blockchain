@@ -11,11 +11,6 @@ type FleetManagerContract struct {
 	contractapi.Contract
 }
 
-type DriverRating struct {
-	DriverID string
-	Rating string // 'excelente', 'mediano', 'ruim'
-}
-
 func (c *FleetManagerContract) GetAllVehiclesStatus(ctx contractapi.TransactionContextInterface) ([]VehicleStatus, error) {
 	telemetryMap, err := c.GetAllVehiclesTelemetries(ctx)
 	if err != nil {
@@ -50,14 +45,14 @@ func (c *FleetManagerContract) GetAllVehiclesStatus(ctx contractapi.TransactionC
 	return vehicleStatuses, nil
 }
 
-func (c *FleetManagerContract) GetAllVehiclesTelemetries(ctx contractapi.TransactionContextInterface) (map[string]*TelemetryData, error) {
+func (c *FleetManagerContract) GetAllVehiclesTelemetries(ctx contractapi.TransactionContextInterface) (map[string]*VehicleTelemetryAsset, error) {
 	telemetryIterator, err := ctx.GetStub().GetStateByPartialCompositeKey("vehicle-telemetry", []string{})
 	if err != nil {
 		return nil, fmt.Errorf("failed to get telemetry iterator: %v", err)
 	}
 	defer telemetryIterator.Close()
 
-	telemetryMap := make(map[string]*TelemetryData)
+	telemetryMap := make(map[string]*VehicleTelemetryAsset)
 
 	for telemetryIterator.HasNext() {
 		kv, err := telemetryIterator.Next()
@@ -71,7 +66,7 @@ func (c *FleetManagerContract) GetAllVehiclesTelemetries(ctx contractapi.Transac
 		}
 
 		vehicleID := compositeKeyParts[0]
-		var telemetry TelemetryData
+		var telemetry VehicleTelemetryAsset
 		err = json.Unmarshal(kv.Value, &telemetry)
 		if err != nil {
 			return nil, fmt.Errorf("failed to unmarshal telemetry: %v", err)
@@ -81,14 +76,14 @@ func (c *FleetManagerContract) GetAllVehiclesTelemetries(ctx contractapi.Transac
 	return telemetryMap, nil
 }
 
-func (c *FleetManagerContract) GetAllVehiclesDiagnostics(ctx contractapi.TransactionContextInterface) (map[string]*DiagnosticData, error) {
+func (c *FleetManagerContract) GetAllVehiclesDiagnostics(ctx contractapi.TransactionContextInterface) (map[string]*VehicleDiagnosticAsset, error) {
 	diagnosticIterator, err := ctx.GetStub().GetStateByPartialCompositeKey("vehicle-diagnostic", []string{})
 	if err != nil {
 		return nil, fmt.Errorf("failed to get diagnostic iterator: %v", err)
 	}
 	defer diagnosticIterator.Close()
 
-	diagnosticMap := make(map[string]*DiagnosticData)
+	diagnosticMap := make(map[string]*VehicleDiagnosticAsset)
 
 	for diagnosticIterator.HasNext() {
 		kv, err := diagnosticIterator.Next()
@@ -102,7 +97,7 @@ func (c *FleetManagerContract) GetAllVehiclesDiagnostics(ctx contractapi.Transac
 		}
 
 		vehicleID := compositeKeyParts[0]
-		var diagnostic DiagnosticData
+		var diagnostic VehicleDiagnosticAsset
 		err = json.Unmarshal(kv.Value, &diagnostic)
 		if err != nil {
 			return nil, fmt.Errorf("failed to unmarshal diagnostic: %v", err)

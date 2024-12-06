@@ -11,7 +11,7 @@ type VehiclesContract struct {
 	contractapi.Contract
 }
 
-type TelemetryData struct {
+type VehicleTelemetryAsset struct {
 	VehicleID     int `json:"vehicle_id"`
 	Timestamp     int `json:"timestamp"`
 	DriverID      int `json:"driver_id"`
@@ -24,19 +24,20 @@ type TelemetryData struct {
 	Mileage       int `json:"mileage"`
 }
 
-type DiagnosticData struct {
+type VehicleDiagnosticAsset struct {
 	Diagnostics []string `json:"diagnostics"`
 	Timestamp   int      `json:"timestamp"`
+	DriverID    int      `json:"driver_id"`
 }
 
 type VehicleStatus struct {
-	VehicleID   string          `json:"vehicle_id"`
-	Telemetry   *TelemetryData  `json:"telemetry"`
-	Diagnostics *DiagnosticData `json:"diagnostics"`
+	VehicleID   string                  `json:"vehicle_id"`
+	Telemetry   *VehicleTelemetryAsset  `json:"telemetry"`
+	Diagnostics *VehicleDiagnosticAsset `json:"diagnostics"`
 }
 
 func (c *VehiclesContract) RecordTelemetry(ctx contractapi.TransactionContextInterface, vehicleId string, telemetryData string) error {
-	var telemetry TelemetryData
+	var telemetry VehicleTelemetryAsset
 	err := json.Unmarshal([]byte(telemetryData), &telemetry)
 	if err != nil {
 		return fmt.Errorf("failed to unmarshal telemetry data: %v", err)
@@ -56,7 +57,7 @@ func (c *VehiclesContract) RecordTelemetry(ctx contractapi.TransactionContextInt
 }
 
 func (c *VehiclesContract) RecordDiagnostics(ctx contractapi.TransactionContextInterface, vehicleID string, diagnosticData string) error {
-	var diagnostic DiagnosticData
+	var diagnostic VehicleDiagnosticAsset
 	err := json.Unmarshal([]byte(diagnosticData), &diagnostic)
 	if err != nil {
 		return fmt.Errorf("failed to unmarshal diagnostic data: %v", err)
