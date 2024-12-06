@@ -66,4 +66,57 @@ app.get('/status', async (req, res) => {
     }
 });
 
+app.get('/latestTelemetry/:vehicleId', async(req, res) => {
+    const vehicleId = req.params.vehicleId;
+
+    try {
+        const contract = await getContract('InsuranceProviderContract');
+        const result = await contract.evaluateTransaction('GetLatestVehicleStatus', vehicleId);
+        res.status(200).json(JSON.parse(result.toString('ascii')));
+    } catch (error) {
+        console.error(`Failed to submit transaction: ${error}`);
+        res.status(500).send(`Error: ${error.message}`);
+    }
+});
+
+app.get('/latestDiagnostic/:vehicleId', async(req, res) => {
+    const vehicleId = req.params.vehicleId;
+
+    try {
+        const contract = await getContract('RepairShopContract');
+        const result = await contract.evaluateTransaction('GetLatestVehicleDiagnostic', vehicleId);
+        res.status(200).json(JSON.parse(result.toString('ascii')));
+    } catch (error) {
+        console.error(`Failed to submit transaction: ${error}`);
+        res.status(500).send(`Error: ${error.message}`);
+    }
+});
+
+app.post('/maintenance/:vehicleId', async(req, res) => {
+    const vehicleId = req.params.vehicleId;
+    const { maintenance } = req.body;
+
+    try {
+        const contract = await getContract('RepairShopContract');
+        await contract.submitTransaction('RecordMaintenance', vehicleId, JSON.stringify(maintenance));
+        res.status(200).send('Maintenance recorded successfully.');
+    } catch (error) {
+        console.error(`Failed to submit transaction: ${error}`);
+        res.status(500).send(`Error: ${error.message}`);
+    }
+});
+
+app.get('/latestMaintenance/:vehicleId', async(req, res) => {
+    const vehicleId = req.params.vehicleId;
+
+    try {
+        const contract = await getContract('RepairShopContract');
+        const result = await contract.evaluateTransaction('GetLatestVehicleDiagnostic', vehicleId);
+        res.status(200).json(JSON.parse(result.toString('ascii')));
+    } catch (error) {
+        console.error(`Failed to submit transaction: ${error}`);
+        res.status(500).send(`Error: ${error.message}`);
+    }
+});
+
 app.listen(3000);

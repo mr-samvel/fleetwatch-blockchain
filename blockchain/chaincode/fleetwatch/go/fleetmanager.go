@@ -16,18 +16,6 @@ type DriverRating struct {
 	Rating string // 'excelente', 'mediano', 'ruim'
 }
 
-func (c *FleetManagerContract) GetDriversRatings(ctx contractapi.TransactionContextInterface) (map[string]) {
-	// pega todos os diagnosticos associados ao motorista
-	ctx.GetStub().GetQueryResult('{vehicle-telemetry: {driver_id: x}}')
-	// se o numero de diagnosticos for > x
-		// motorista.rating = ruim
-	// se x >= diagnosticos >= y
-		// motorista.rating = mediano
-	// se nao
-		// motorista.rating = excelente
-	// return motorista
-}
-
 func (c *FleetManagerContract) GetAllVehiclesStatus(ctx contractapi.TransactionContextInterface) ([]VehicleStatus, error) {
 	telemetryMap, err := c.GetAllVehiclesTelemetries(ctx)
 	if err != nil {

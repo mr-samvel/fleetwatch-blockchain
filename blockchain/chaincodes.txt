@@ -1,14 +1,14 @@
 vehicles:
-    inserir pacotes de dados na blockchain
-    inserir diagnóstico na blockchain
+    inserir pacotes de dados na blockchain - FEITO
+    inserir diagnóstico na blockchain - FEITO
 
 fleetmanagers:
     obter relações entre motoristas e diagnósticos ruins
-    obter último pacote de dados da frota que gerencia
+    obter último pacote de dados da frota que gerencia - FEITO
 
 insurance providers:
-    obter último pacote de dados de um carro específico
+    obter último pacote de dados de um carro específico - FEITO
 
 repair shops:
-    registrar manutenção
-    obter último diagnóstico de um carro específico
+    registrar manutenção - FEITO
+    obter último diagnóstico de um carro específico - FEITO
