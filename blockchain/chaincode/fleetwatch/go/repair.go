@@ -4,6 +4,6 @@ import (
 	"github.com/hyperledger/fabric-contract-api-go/contractapi"
 )
 
-type RepairShopsContract struct {
+type RepairShopContract struct {
 	contractapi.Contract
 }

@@ -24,7 +24,7 @@ async function connectToNetwork() {
 }
 
 async function getContract(contractName) {
-    return (await connectToNetwork()).getContract(contractName);
+    return (await connectToNetwork()).getContract('fleetwatch', contractName);
 }
 
 app.post('/telemetry/:vehicleId', async (req, res) => {
@@ -32,8 +32,8 @@ app.post('/telemetry/:vehicleId', async (req, res) => {
     const { telemetry } = req.body;
 
     try {
-        const contract = await getContract('vehicles');
-        await contract.submitTransaction('recordTelemetry', vehicleId, JSON.stringify(telemetry));
+        const contract = await getContract('VehiclesContract');
+        await contract.submitTransaction('RecordTelemetry', vehicleId, JSON.stringify(telemetry));
         res.status(200).send('Telemetry recorded successfully.');
     } catch (error) {
         console.error(`Failed to submit transaction: ${error}`);
@@ -46,8 +46,8 @@ app.post('/diagnostics/:vehicleId', async (req, res) => {
     const { diagnostics } = req.body;
 
     try {
-        const contract = await getContract('vehicles');
-        await contract.submitTransaction('recordDiagnostics', vehicleId, JSON.stringify(diagnostics));
+        const contract = await getContract('VehiclesContract');
+        await contract.submitTransaction('RecordDiagnostics', vehicleId, JSON.stringify(diagnostics));
         res.status(200).send('Diagnostics recorded successfully.');
     } catch (error) {
         console.error(`Failed to submit transaction: ${error}`);
@@ -57,14 +57,13 @@ app.post('/diagnostics/:vehicleId', async (req, res) => {
 
 app.get('/status', async (req, res) => {
     try {
-        const contract = await getContract('fleetmanager');
-        const result = await contract.evaluateTransaction('GetAllVehicleStatus');
-        res.status(200).json(result.toJSON())
+        const contract = await getContract('FleetManagerContract');
+        const result = await contract.evaluateTransaction('GetAllVehiclesStatus');
+        res.status(200).json(JSON.parse(result.toString('ascii')));
     } catch (error) {
         console.error(`Failed to submit transaction: ${error}`);
         res.status(500).send(`Error: ${error.message}`);
     }
 });
-
 
 app.listen(3000);

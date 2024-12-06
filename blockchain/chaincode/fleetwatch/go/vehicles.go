@@ -29,6 +29,12 @@ type DiagnosticData struct {
 	Timestamp   int      `json:"timestamp"`
 }
 
+type VehicleStatus struct {
+	VehicleID   string          `json:"vehicle_id"`
+	Telemetry   *TelemetryData  `json:"telemetry"`
+	Diagnostics *DiagnosticData `json:"diagnostics"`
+}
+
 func (c *VehiclesContract) RecordTelemetry(ctx contractapi.TransactionContextInterface, vehicleId string, telemetryData string) error {
 	var telemetry TelemetryData
 	err := json.Unmarshal([]byte(telemetryData), &telemetry)
@@ -36,7 +42,7 @@ func (c *VehiclesContract) RecordTelemetry(ctx contractapi.TransactionContextInt
 		return fmt.Errorf("failed to unmarshal telemetry data: %v", err)
 	}
 
-	telemetryKey, err := ctx.GetStub().CreateCompositeKey("vehicle-telemetry", []string{vehicleId})
+	telemetryKey, err := ctx.GetStub().CreateCompositeKey("vehicle-maintenance", []string{vehicleId})
 	if err != nil {
 		return fmt.Errorf("failed to create composite key: %v", err)
 	}

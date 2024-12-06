@@ -7,9 +7,11 @@ import (
 )
 
 func main() {
-	insuranceContract := new(InsuranceProviderContract)
-
-	cc, err := contractapi.NewChaincode(insuranceContract)
+	cc, err := contractapi.NewChaincode(
+		new(VehiclesContract),
+		new(FleetManagerContract))
+	// new(RepairShopContract),
+	// new(InsuranceProviderContract))
 	if err != nil {
 		log.Panicf("Error creating vehicles chaincode: %v", err)
 	}
